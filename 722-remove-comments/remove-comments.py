@@ -1,68 +1,40 @@
 class Solution:
     def removeComments(self, source: List[str]) -> List[str]:
-        j, size, result = 0, len(source), []
-        in_comment = False
-        temp = []
+        i, size, res = 0, len(source), []
+        cmnt_found = False
 
-        for line in source:
-            after_removing = []
-            i = 0
-            while i < len(line):
-                if in_comment:
-                    # inside of a comment
-                    # */ -> we are looking for
-                    if line[i] == "*" and i+1 < len(line) and line[i+1] == "/":
-                        in_comment = False
-                        after_removing = temp
-                        i += 1
-                else:
-                    # if we encouter normal value
-                    if line[i] != "/":
-                        after_removing.append(line[i])
+        while i < size:
+            line = source[i]
+
+            slstart = line.index('//') if '//' in line else -1
+            mlstart = line.index('/*') if '/*' in line else -1
+
+            before_cmnt, after_cmnt = '', ''
+
+            if slstart != mlstart: # one of the two or both comments exist
+                before_cmnt = line[:slstart if mlstart == -1 or (slstart != -1 and slstart < mlstart) else mlstart]
+
+                if mlstart != -1 and (slstart == -1 or mlstart < slstart):
+                    tmp = line[mlstart + 2:]
+                    if '*/' in tmp:
+                        after_cmnt = tmp[tmp.index('*/') + 2:]
                     else:
-                        if i + 1 < len(line) and line[i+1] in ["*", "/"]:
-                            # start of a comment
-                            if line[i+1] == "*":
-                                # multi-line comments
-                                temp = after_removing[::]
-                                after_removing = []
-                                in_comment = True
-                                i += 1
-                            else:
-                                # one line comment won't consider anything
+                        i += 1
+                        while i < size:
+                            curr_line = source[i]
+                            if '*/' in curr_line:
+                                after_cmnt = curr_line[curr_line.index('*/') + 2:]
                                 break
-                        else:
-                            after_removing.append(line[i])
-                i += 1
+                            i += 1
 
-            if after_removing:
-                
-                result.append(''.join(after_removing))
+                line = before_cmnt + after_cmnt
+                cmnt_found = True
             
-        return result
+            if line: res.append(line)
+            i += 1
 
+            if i >= size and cmnt_found:
+                i, source, res, cmnt_found = 0, res, [], False
+                size = len(source)
 
-
-
-            # if '/*' in line:
-            #     before_comment = line[:line.index('/*')]
-            #     after_comment = ''
-            #     while i < size:
-            #         curr_line = source[i]
-            #         if '*/' in curr_line:
-            #             after_comment = curr_line[curr_line.index('*/') + 2:]
-            #             break
-            #         i += 1
-                
-            #     after_removing = ''.join([before_comment, after_comment])
-            #     if after_removing: result.append(after_removing)
-
-            # elif "//" in line:
-            #     after_removing = line[:line.index('//')]
-            #     if after_removing: result.append(after_removing)
-            # else:
-            #     result.append(line)
-            
-            # i += 1
-        
-        # return result
+        return res
