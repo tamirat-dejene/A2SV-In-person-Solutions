@@ -1,11 +1,10 @@
 class Solution:
     def subdomainVisits(self, cpdomains: List[str]) -> List[str]:
-        dom_cnt, domains = {}, []
+        dom_cnt = {}
 
         for cnt_domain in cpdomains:
             cnt, domain = cnt_domain.split(" ")
             subdomains = domain.split('.')
-            domains.append(subdomains)
 
             sd = ''
             for i, subdomain in enumerate(subdomains[::-1]):
