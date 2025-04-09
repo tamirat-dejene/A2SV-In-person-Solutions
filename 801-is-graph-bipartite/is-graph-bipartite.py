@@ -2,11 +2,7 @@ class Solution:
     def isBipartite(self, graph: List[List[int]]) -> bool:
         n = len(graph)
         gcolor = [0] * n
-
-        def can_color(clr, node):
-            for n in graph[node]:
-                if gcolor[n] == clr: return False
-            return True
+        can_color = lambda clr, node: not any(gcolor[c] == clr for c in graph[node])
 
         def dfs(node):
             for nn in graph[node]:
@@ -20,7 +16,6 @@ class Solution:
                 if gcolor[nn] == 0: return False
                     
             return True
-
         
         for i in range(n):
             if gcolor[i] == 0:
