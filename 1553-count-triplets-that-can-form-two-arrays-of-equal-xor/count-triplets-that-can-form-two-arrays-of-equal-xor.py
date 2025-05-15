@@ -7,11 +7,11 @@ class Solution:
         b = 0
 
         for i in range(ln - 1):
-            a = arr[i]
+            a = 0
 
             for j in range(i + 1, ln):
-                a ^= arr[j]
-                b = arr[j]
+                a ^= arr[j - 1]
+                b = 0
 
                 for k in range(j, ln):
                     b ^= arr[k]
