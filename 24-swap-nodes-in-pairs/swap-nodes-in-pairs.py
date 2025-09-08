@@ -10,21 +10,20 @@ class Solution:
 
         curr = head
         prev = None
-        cnt = 0
 
         while curr and curr.next:
             keep = curr.next.next
             curr.next.next = curr
 
-            if prev:
-                prev.next = curr.next
-            else:
+            if not prev:
                 head = curr.next
+            else:
+                prev.next = curr.next
 
+            curr.next = keep
             prev = curr
             curr = keep
-            prev.next = curr
-        
+
         return head
 
         
