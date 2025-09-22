@@ -1,20 +1,14 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        n = len(nums)
-        memo = {}
+        store = {}
 
-        def dp(i):
-            if i == n - 1:
-                return nums[i]
+        def dp(n):
+            if n >= len(nums):
+                return 0
 
-            if i == n - 2:
-                return max(nums[i], nums[i + 1])
+            if n not in store:
+                store[n] = nums[n] + max(dp(n + 2), dp(n + 3))
 
-            if i not in memo:
-                memo[i] = max(dp(i + 1), dp(i + 2) + nums[i])
-            
-            return memo[i]
-        
-        return dp(0)
+            return store[n]
 
-        
+        return max(dp(0), dp(1))
