@@ -25,7 +25,8 @@ class Solution:
             for r in range(l + 1, N):
                 if nums[l] < nums[r]:
                     store[l] = max(store[l], 1 + store[r])
-        print(store)
+
+
         return max(store)
                 
         
