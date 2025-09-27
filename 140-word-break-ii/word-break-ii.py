@@ -6,7 +6,7 @@ class Solution:
         ans = []
         def dfs(i, lst):
             if i == len(s):
-                ans.append(lst[:])
+                ans.append(' '.join(lst))
                 return lst
             
             for j in range(i, min(i + longest_word, len(s))):
@@ -16,5 +16,5 @@ class Solution:
                     lst.pop()
 
         dfs(0, [])
-        return [' '.join(a) for a in ans]
+        return ans
         
