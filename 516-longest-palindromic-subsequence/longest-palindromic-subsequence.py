@@ -9,8 +9,13 @@ class Solution:
                 return 1
             
             if s[l] == s[r]:
-                return max(2 + dfs(l + 1, r - 1), dfs(l, r - 1))
+                return 2 + dfs(l + 1, r - 1)
             else:
                 return max(dfs(l + 1, r), dfs(l, r - 1))
 
         return dfs(0, len(s) - 1)
+
+
+
+
+
