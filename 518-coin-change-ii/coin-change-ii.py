@@ -1,17 +1,9 @@
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
-        store = [[-1] * (amount + 1) for _ in range(len(coins))]
+        dp = [1] + [0] * (amount)
 
-        def dfs(amount, i):
-            if amount == 0:
-                return 1
-            elif amount < 0 or i >= len(coins):
-                return 0
-
-            if store[i][amount] == -1:
-                store[i][amount] = dfs(amount -  coins[i], i) + dfs(amount, i + 1)
-
-            return store[i][amount]
+        for c in coins:
+            for total in range(c, amount+1):
+                dp[total] += dp[total-c]
         
-        return dfs(amount, 0)
-        
+        return dp[amount]
