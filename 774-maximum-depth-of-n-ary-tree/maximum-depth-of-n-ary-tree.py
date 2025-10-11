@@ -8,15 +8,12 @@ class Node:
 
 class Solution:
     def maxDepth(self, root: 'Node') -> int:
-        vis = set([root])
         def dfs(nd):
             if not nd:
                 return 0
             ans = 1
             for ch in nd.children:
-                if ch not in vis:
-                    vis.add(ch)
-                    ans = max(1 + dfs(ch), ans)
+                ans = max(1 + dfs(ch), ans)
             
             return ans
         
