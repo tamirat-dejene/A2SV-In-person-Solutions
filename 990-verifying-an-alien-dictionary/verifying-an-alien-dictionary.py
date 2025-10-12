@@ -36,17 +36,47 @@ class Trie:
         return [[]] if not res else res
 
 class Solution:
+    # Solution 1
     def isAlienSorted(self, words: List[str], order: str) -> bool:
-        cnt = Counter(words)
+        dictionary = {word: i for i, word in enumerate(order)}
 
-        trie = Trie(order)
-        for word in words:
-            trie.insert(word)
-        
-        io, srted = trie.inorder(trie.root), []
+        def compare(word1, word2, l1=0, l2=0):
+            M, N = len(word1), len(word2)
+            
+            if l1 == M: return -1 # word1 end
+            if l2 == N: return 1 # word2 end
 
-        for wo in io:
-            wo = ''.join(wo)
-            srted.extend([wo] * cnt[wo])
+            r1, r2 = l1, l2
+            for r in range(M, l1, -1):
+                if word1[l1:r] in dictionary:
+                    r1 = r
+                    break
+                    
+            for r in range(N, l2, -1):
+                if word2[l2:r] in dictionary:
+                    r2 = r
+                    break
+
+            a = dictionary[word1[l1:r1]]
+            b = dictionary[word2[l2:r2]]
+
+            return -1 if a < b else 1 if a > b else compare(word1, word2, r1, r2)
+
+        srted = sorted(words, key=cmp_to_key(compare))
+
+        return srted == words
+
+    # def isAlienSorted(self, words: List[str], order: str) -> bool:
+    #     cnt = Counter(words)
+
+    #     trie = Trie(order)
+    #     for word in words:
+    #         trie.insert(word)
         
-        return words == srted
+    #     io, srted = trie.inorder(trie.root), []
+
+    #     for wo in io:
+    #         wo = ''.join(wo)
+    #         srted.extend([wo] * cnt[wo])
+        
+    #     return words == srted
