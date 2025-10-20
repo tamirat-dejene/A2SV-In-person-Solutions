@@ -1,8 +1,12 @@
 class Solution:
-    def finalValueAfterOperations(self, operations: List[str]) -> int:
-        start=0
-        for op in operations:
-            if op == '--X' or op == 'X--': start -= 1
-            elif op == '++X' or op == 'X++': start += 1
-        return start
+    def finalValueAfterOperations(self, ops: List[str], i=0) -> int:
+        if i >= len(ops):
+            return 0
+
+        if ops[i] == 'X++' or ops[i] == '++X':
+            return 1 + self.finalValueAfterOperations(ops, i + 1)
+        else:
+            return -1 + self.finalValueAfterOperations(ops, i + 1)
+        
+        
         
