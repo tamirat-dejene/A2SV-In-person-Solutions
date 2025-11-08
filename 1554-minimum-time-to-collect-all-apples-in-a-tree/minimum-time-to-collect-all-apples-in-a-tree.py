@@ -5,8 +5,6 @@ class Solution:
             tree[a].append(b)
             tree[b].append(a)
 
-        store = {}
-
         def dfs(pnd, cnd):
             tot = 0
             got_one = hasApple[cnd]
@@ -14,14 +12,12 @@ class Solution:
             for gcnd in tree[cnd]:
                 if gcnd == pnd: continue
 
-                h = dfs(cnd, gcnd)
-                tot += 2 * h
+                h, t = dfs(cnd, gcnd)
                 got_one = h or got_one
+                tot += 2 * h + t
                     
-            store[cnd] = tot
-            return got_one
+            return got_one, tot
 
         
-        dfs(-1, 0)
-        return  sum(store.values())
+        return dfs(-1, 0)[1]
         
